@@ -27,6 +27,13 @@ public class MySQLOradorRepository implements OradorRepository {
 			statement.setDate(5, new java.sql.Date(System.currentTimeMillis())); //tph: ver como pasar de LocalDate a java.sql.Date
 			
 			statement.executeUpdate();//INSERT,UPDATE,DELETE
+			
+			ResultSet res = statement.getGeneratedKeys();
+			if(res.next()) {
+				Long _id = res.getLong(1);
+				orador.setId(_id);}
+			
+			
 		}catch (Exception e) {
 			throw new IllegalArgumentException("No se pudo crear el orador",e);
 		}

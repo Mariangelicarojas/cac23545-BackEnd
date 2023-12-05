@@ -1,46 +1,57 @@
 package ar.com.codoacodo.controllers;
 
+
+import java.util.stream.Collectors;
+import java.io.IOException;
 import java.time.LocalDate;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import ar.com.codoacodo.entity.Orador;
 import ar.com.codoacodo.repository.MySQLOradorRepository;
 import ar.com.codoacodo.repository.OradorRepository;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-public class NuevoOradorController {
-	public static void main(String[] args) {
-		String nombre = "carlos";
-		String apellido = "lopez";
-		String mail = "carlos2@hotmail.com";
-		String tema = "java";
+@WebServlet("/api/orador/nuevo")
+
+public class NuevoOradorController extends HttpServlet{
+	
+	protected void doPost(
+			HttpServletRequest request, 
+			HttpServletResponse response) 
+			throws ServletException, IOException {
+	
+		
+		String json = request.getReader()
+				.lines()
+				.collect(Collectors.joining(System.lineSeparator()));
+		
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JavaTimeModule());
+		mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+		OradorRequest oradorRequest = mapper.readValue(json, OradorRequest.class);
 		
 		//validaciones
-		if (nombre == null || nombre.isEmpty() || !nombre.matches("[a-zA-Z]+")) {
-            System.out.println("Error: El nombre no es válido.");
-            return; // Puedes manejar el error de la manera que desees.
-        }
-
-        if (apellido == null || apellido.isEmpty() || !apellido.matches("[a-zA-Z]+")) {
-            System.out.println("Error: El apellido no es válido.");
-            return;
-        }
-
-        if (mail == null || mail.isEmpty() || !mail.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
-            System.out.println("Error: El correo electrónico no es válido.");
-            return;
-        }
-        
-        if (tema == null || tema.isEmpty() || !tema.matches("[a-zA-Z]+")) {
-            System.out.println("Error: El tema no es válido.");
-            return;
-        }
+		if (oradorRequest.getNombre() == null || oradorRequest.getApellido()== null 
+			||oradorRequest.getMail() == null || oradorRequest.getTema() == null ) {
+		}
 
 		
 		OradorRepository repository = new MySQLOradorRepository();
-		repository.save(new Orador(nombre, apellido, mail, tema, LocalDate.now()));
-		
+		Orador orador = new Orador(oradorRequest.getNombre(), 
+				oradorRequest.getApellido(),
+				oradorRequest.getMail(), 
+				oradorRequest.getTema(), 
+				LocalDate.now());
+
+				repository.save(orador);
 		//respondo al frotned un json ok
-		System.out.println("Operación exitosa: Nuevo orador creado y guardado.");
-		
+		response.getWriter().print(mapper.writeValueAsString(orador));
 		
 
 	}
