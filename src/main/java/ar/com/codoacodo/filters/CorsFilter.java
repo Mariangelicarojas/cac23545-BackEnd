@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @WebFilter(urlPatterns = {"/*"})
-public class CorsFilter implements Filter {
+public class CorsFilter implements Filter{
 
 	public void doFilter(
 			ServletRequest request, 
@@ -21,14 +21,22 @@ public class CorsFilter implements Filter {
 			FilterChain chain)
 			throws IOException, ServletException {
 		
-		var originesPermitidos = List.of("http://localhost:5500","http://127.0.0.1:5500");
+		
+		
+		var origenesPermitidos = List.of("http://localhost:5500","http://127.0.0.1:5500");//Spring
 		
 		String origin = ((HttpServletRequest)request).getHeader("origin");
 		
-		if (originesPermitidos.contains(origin)) {
-			((HttpServletResponse)response).addHeader("Access-Control-Allow-Origin", origin);
+		HttpServletResponse httpResponse = (HttpServletResponse) response;
+		
+		if(origenesPermitidos.contains(origin)) {
+			//((HttpServletResponse)response).addHeader("Access-Control-Allow-Origin", origin);
+			httpResponse.setHeader("Access-Control-Allow-Origin", origin);
+			httpResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+			httpResponse.setHeader("Access-Control-Max-Age", "3600");
+			httpResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept, X-Requested-With, remember-me");			
 		}
 		chain.doFilter(request, response);
 	}
-	
+
 }

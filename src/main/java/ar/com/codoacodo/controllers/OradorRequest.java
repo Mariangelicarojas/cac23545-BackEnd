@@ -1,14 +1,15 @@
 package ar.com.codoacodo.controllers;
 
 public class OradorRequest {
-
 	private String nombre;
 	private String apellido;
 	private String mail;
 	private String tema;
+	private Long id;
 	
+	//porque lo necesita jackson
 	public OradorRequest() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public OradorRequest(String nombre, String apellido, String mail, String tema) {
@@ -18,10 +19,20 @@ public class OradorRequest {
 		this.mail = mail;
 		this.tema = tema;
 	}
+	
+	public OradorRequest(Long id, String nombre, String apellido, String mail, String tema) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.mail = mail;
+		this.tema = tema;
 
-	@Override
-	public String toString() {
-		return "OradorRequest [nombre=" + nombre + ", apellido=" + apellido + ", mail=" + mail + ", tema=" + tema + "]";
+	}
+
+
+	public Long getId() {
+		return id;
 	}
 
 	public String getNombre() {
@@ -40,5 +51,8 @@ public class OradorRequest {
 		return tema;
 	}
 
-
+	@Override
+	public String toString() {
+		return "OradorRequest [nombre=" + nombre + ", apellido=" + apellido + ", mail=" + mail + ", tema=" + tema + "]";
+	}
 }

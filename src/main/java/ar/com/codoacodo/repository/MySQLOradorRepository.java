@@ -95,6 +95,7 @@ public class MySQLOradorRepository implements OradorRepository {
 				
 		try(Connection conn = AdministradorDeConexiones.getConnection()) {
 			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setLong(1, id);
 			statement.executeUpdate();
 		}catch(Exception e) {
 			throw new IllegalArgumentException("No se pudo eliminar el orador", e);
@@ -103,7 +104,7 @@ public class MySQLOradorRepository implements OradorRepository {
 
 	@Override
 	public List<Orador> findAll() {
-		String sql = "select id, nombre, apellido, tema, mail, fecha_alta from orador";
+		String sql = "select id, nombre, apellido, tema, mail, fecha_alta from orador order by 1 desc";
 		
 		List<Orador> oradores = new ArrayList<>();//ver bien power en Spring!
 		try(Connection conn = AdministradorDeConexiones.getConnection()) {

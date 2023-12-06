@@ -1,33 +1,30 @@
 package ar.com.codoacodo.entity;
-
 import java.time.LocalDate;
 
 public class OradorMain {
 
 	public static void main(String[] args) {
+		// simular que creamos un objeto de la clase Orador
+		// para grabar en la db 
 		
-		//crear un orador a partir de la clase orador
+		//instancio un objeto de la clase Orador
+		//crear un orador a partir de la clase Orador
+		Orador nuevoOrador = new Orador("carlos", "lopez", "email@email.com", "java", LocalDate.now());
 		
-		//instancio un objeto
+		//mostrar por consola el nuevo orador
+		System.out.println(nuevoOrador);
 		
-	Orador nuevoOrador = new Orador("Carlos", "Lopez", "mariarojas792@gmail.com", "Java", LocalDate.now());
-	
-		//instancia un obejto de la base de datos
-	Orador nuevoFromDB = new Orador(1L,"Carlos", "Lopez", "mariarojas792@gmail.com", "Java", LocalDate.now());
+		//instancia de la clase orador "simulando" que viene desde la DB
+		Orador nuevoFromDB = new Orador(1L,"carlos", "lopez", "email@email.com", "java", LocalDate.now());
 		
-	//un tipo de polimorfismo es la sobrecarga: en la misma clase tengo dos metodos o constructores con el mismo nombre 
-	//pero con distintos parametros.
-	//sobredifinición no es la misma clase  y modifica atributos del padre
-	
-	
-	//nuevoOrador.id = 1L; (ejemplo de que se podia cambiar el id)
-	System.out.println(nuevoOrador);
-	nuevoOrador.setNombre("Pepe");
-	
-	//si quiero saber el nombre del orador hago un getters 
-	
-	
-	
+		//un tipo de polimorfismo es la sobrecarga: en la misma clase tengo dos metodos o constructores  
+		//con el mismo nombre pero con distintos parametros
+		
+		//nuevoOrador.id = 1L;//problema de encapsulamiento
+		nuevoOrador.setNombre("pepe");
+		
+		//si quiero saber el nombre del orado
+		//entonces implemento un getter
 	}
 
 }
