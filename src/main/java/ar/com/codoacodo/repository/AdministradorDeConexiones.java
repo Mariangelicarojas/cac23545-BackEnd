@@ -14,18 +14,22 @@ public class AdministradorDeConexiones {
 		String username = "root";
 		String password = "20693544";
 		String port = "3306";
-		String dbName = "integrador_cac";
-		
-		String dbUrl = "jdbc:mysql://"+host+":"+port+"/"+dbName + "?allowPublicKeyRetrieval=true&serverTimeZone=UTC&useSSL=false";
-		
+		String dbName = "integrador_cac";		
+		String dbUrl = "jdbc:mysql://"+host+":"+port+"/"+dbName + "?allowPublicKeyRetrieval=true&serverTimeZone=UTC&useSSL=false";  
 		String driver = "com.mysql.cj.jdbc.Driver";
+		
+		Connection con = null;
 		
 		try { //se ve en el avanzado!! 
 			Class.forName(driver);
-			return DriverManager.getConnection(dbUrl, username, password);
+			con = DriverManager.getConnection(dbUrl, username, password);
 		} catch (Exception e) {
+			//System.out.println(e);
+			//e.printStackTrace();
 			throw new IllegalArgumentException("No se pudo obtener conexion: " + dbUrl + " - " + driver);
 		}
+		
+		return con;
 	}
 }
 
